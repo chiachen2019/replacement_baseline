@@ -137,10 +137,10 @@ The state variables are `L_u` (wild-type aquatic stage), `A_u` (wild-type adults
 
 The main script evaluates:
 
-- **Existing source reduction:** 9 levels (0.1–0.9) × 4 post-release retention levels (0, 0.25, 0.5, 0.75) × 6 blocking levels (0.5–1.0): **216 combinations**.
+- **Existing source reduction, Wolbachia replacement with source reduction retained:** 9 levels (0.1–0.9) × 4 post-release retention levels (0, 0.25, 0.5, 0.75) × 6 blocking levels (0.5–1.0): **216 combinations**.
 - **Initially low abundance, Wolbachia replacement:** 10 initial population fractions (0.1–1.0) × 6 blocking levels: **60 combinations**.
-- **No release:** 10 initial population fractions, blocking set to zero, release ratio set to zero.
-- **Source reduction only:** 9 source-reduction levels × 11 initial population fractions (0.01 and 0.1–1.0), no Wolbachia release.
+- **Initially low abundance, No release:** 10 initial population fractions, blocking set to zero, release ratio set to zero.
+- **Initially low abundance, Source reduction only:** 9 source-reduction levels × 11 initial population fractions (0.01 and 0.1–1.0), no Wolbachia release.
 
 See the parameter files and `run_simulation_20260928.R` for exact settings. Model parameters and vectorial-capacity defaults are defined in `R/parameters/` and `R/calculate_vectorial_capacity_func_20260928.R`.
 
