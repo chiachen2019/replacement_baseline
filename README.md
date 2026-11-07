@@ -21,15 +21,15 @@ The paths below assume `baseline/` is the working directory when running the scr
 ```text
 baseline/
 ├── README.md
-├── run_simulation.R
+├── run_simulation_20260928.R
 ├── R/
 │   ├── parameters/
-│   │   ├── vector_control.R
-│   │   └── no_vector_control.R
-│   ├── vector_control_model.R
-│   ├── calculate_vectorial_capacity.R
-│   ├── run_k0_blocking_scenarios.R
-│   └── run_initial_blocking_scenarios.R
+│   │   ├── no_vector_control_para_20260928.R
+│   │   └── vector_control_para_20260928.R
+│   ├── vector_control_func_20260811.R
+│   ├── calculate_vectorial_capacity_func_20260928.R
+│   ├── run_k0_blocking_scenarios_func_20260928.R
+│   └── run_initial_blocking_scenarios_func_20260928.R
 ├── plot/
 │   ├── est_time_series.pdf
 │   ├──initial_com_approach_2026-10-02.pdf
@@ -67,13 +67,13 @@ and avoids storing large generated files (approximately 250 MB per CSV).
 
 To reproduce the figures:
 
-1. Run `run_simulation.R` to regenerate the four simulation CSV datasets.
+1. Run `run_simulation_20260928.R` to regenerate the four simulation CSV datasets.
 2. Keep the generated CSV files in `baseline/output/`.
 3. Ensure the filenames referenced by the plotting scripts match the generated files
    (the scripts use some date-specific filenames).
 4. Run the plotting scripts after applying the relative-path adjustments described below.
 
-The `output/` and `figures/` directories are local destinations for generated files;
+The `output/` directory is local destination for generated files;
 they may be empty or absent in a fresh clone. Create them as needed. The generated
 CSV files are not required for downloading or reviewing the source code, but **they
 must be regenerated before the plotting scripts can run**.
@@ -83,10 +83,10 @@ must be regenerated before the plotting scripts can run**.
 From the `baseline/` directory, run:
 
 ```bash
-Rscript run_simulation.R
+Rscript run_simulation_20260928.R
 ```
 
-Alternatively, open `run_simulation.R` in RStudio, set the working directory to `baseline/`, and source the script. The run can be computationally intensive because it integrates many scenarios over a 15-year daily time grid.
+Alternatively, open `run_simulation_20260928.R` in RStudio, set the working directory to `baseline/`, and source the script. The run can be computationally intensive because it integrates many scenarios over a 15-year daily time grid.
 
 The simulation generates four date-stamped CSV datasets **locally**. These files are not uploaded to GitHub.
 Simulation scripts may produce filenames with the current date; ensure the CSV names used by the plotting scripts match the files in `output/`.
@@ -124,13 +124,12 @@ These are **generated outputs, not files distributed in the repository**. The fo
 | --- | --- | --- |
 | `est_time_series_plot.R` | `est_time_series.pdf` | Six-panel adult population and Wolbachia-frequency time series |
 | `initial_simulation_comparison_plot_20261002.R` | `equilbrium_time_YYYY-MM-DD.csv` | Time to the specified population threshold under no intervention and Wolbachia scenarios, plus relative time change |
-| Same | `initial_com_approach_time_series_YYYY-MM-DD.pdf` | Total vectorial capacity across selected intervention and initial-population scenarios |
 | Same | `initial_com_approach_YYYY-MM-DD.pdf` | Combined establishment-time, heatmap, and vectorial-capacity figure |
 | `vector_control_plot_results_20260928.R` | `heatmap_vector_control_x_blocking_YYYY-MM-DD.pdf` | Four heatmaps for different post-release source-reduction levels |
 | Same | `time_to_est_YYYY-MM-DD.csv` | First time the Wolbachia frequency exceeds 99% in selected scenarios |
-| Same | `heatmap_vector_control_x_blocking_time_to_establishment_YYYY-MM-DD.pdf` | Combined establishment-time and source-reduction × blocking heatmap figure |
 
-The supplied scripts export **five PDFs and two derived CSV summaries**. Some figures are also included as panels in larger composite figures. 
+
+The supplied scripts export **three PDFs and two derived CSV summaries**. Figures are also included as panels in larger composite figures. 
 
 ## Model and scenarios
 
@@ -143,7 +142,7 @@ The main script evaluates:
 - **No release:** 10 initial population fractions, blocking set to zero, release ratio set to zero.
 - **Source reduction only:** 9 source-reduction levels × 11 initial population fractions (0.01 and 0.1–1.0), no Wolbachia release.
 
-See the parameter files and `run_simulation.R` for exact settings. Model parameters and vectorial-capacity defaults are defined in `R/parameters/` and `R/calculate_vectorial_capacity.R`.
+See the parameter files and `run_simulation_20260928.R` for exact settings. Model parameters and vectorial-capacity defaults are defined in `R/parameters/` and `R/calculate_vectorial_capacity_func_20260928.R`.
 
 ## Reproducibility and scope
 
