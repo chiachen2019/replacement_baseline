@@ -1,57 +1,98 @@
-# [README.md](https://github.com/user-attachments/files/24998499/README.md)
+# Baseline mosquito abundance and Wolbachia replacement: simulation code
 
-Modelling the Impact of Wolbachia Replacement Strategies on Dengue Risk
+R code accompanying the manuscript **“Baseline mosquito abundance determines minimum viral blocking effect required for Wolbachia replacement as a dengue control tool”** (Chang et al.November 2026).
 
-**Overview**
+## Overview
 
-This repository contains all scripts used to generate the results presented in the modelling study evaluating the impact of Wolbachia replacement strategies on dengue risk under varying baseline mosquito population sizes and Wolbachia blocking effects.
+This repository contains deterministic mosquito population simulations investigating how initial *Aedes* abundance, existing source reduction, and Wolbachia-associated viral blocking influence **vectorial capacity**. The model represents aquatic and adult wild-type and Wolbachia-infected mosquitoes, density dependence, seasonality, Wolbachia fitness costs, and discrete releases. Vectorial capacity is calculated from the simulated adult populations.
 
-Baseline population size is defined as the initial wild-type mosquito population relative to the equilibrium carrying capacity. The study compares continuous release and threshold-based (80% goal) release strategies.
+Two main settings are evaluated:
 
-The modelling framework is a discrete-time, discrete-space population model, adapted from:
-Turelli, M. (2020). Cytoplasmic incompatibility in populations with overlapping generations.https://doi.org/10.1111/j.1558-5646.2009.00822.x
+1. **Existing source reduction:** Vary pre-release reductions in aquatic carrying capacity, the fraction of source reduction retained after Wolbachia introduction, and viral blocking efficacy.
+2. **Initially low mosquito abundance:** Vary the initial wild-type population relative to equilibrium and compare Wolbachia replacement with no release and source reduction alone.
 
-All models and analyses are implemented in R.
+The repository contains the simulation and vectorial-capacity calculation scripts, **not** the manuscript's figure-generation scripts or the supplementary analytical derivation.
 
+## Repository structure
 
+```text
+.
+├── README.md
+├── run_simulation.R                   # Main script: runs all four groups of scenarios
+├── R/
+│   ├── parameters/
+│   │   ├── vector_control.R           # Initial conditions and parameters with source reduction
+│   │   └── no_vector_control.R        # Initial conditions and parameters without source reduction
+│   ├── vector_control_model.R         # Four-compartment ODE model
+│   ├── calculate_vectorial_capacity.R # Vectorial-capacity calculation and normalization
+│   ├── run_k0_blocking_scenarios.R    # Existing-source-reduction scenarios
+│   └── run_initial_blocking_scenarios.R # Initial-population scenarios
+└── output/                            # Generated CSV files 
+```
 
-**Model Description**
+## Requirements
 
-Model type: Discrete-time, discrete-space population model
+- R with native pipe support (`|>`, R 4.1 or later)
+- R packages: `deSolve`, `ggplot2`, `tidyverse`
 
-Framework: Adapted from Turelli (2020)
-Key components include wild-type and Wolbachia-infected mosquito populations, density-dependent population dynamics, cytoplasmic incompatibility, Wolbachia-induced blocking effects on dengue transmission
+Install packages in R:
 
+```r
+install.packages(c("deSolve", "ggplot2", "tidyverse"))
+```
 
-Strategies evaluated includes continuous release strategy, and threshold (80% goal) release strategy
+The ODE system is solved using `deSolve::ode()`. The main script also loads `ggplot2` and `tidyverse`; `dplyr::bind_rows()` is used to combine results.
 
+## Running the simulations
 
+Clone or download the repository, open a terminal **in the repository root**, and run:
 
-**Core models**
+```bash
+Rscript run_simulation.R
+```
 
-turelli2020\_vc\_func\_20251103.R: Defines the core model for the continuous release strategy.
-turelli2020\_vc\_80percentgoal\_func\_20251103.R: Defines the core model for the threshold (80% goal) release strategy
+Alternatively, open `run_simulation.R` in RStudio, set the working directory to the repository root, and source the script. The run can be computationally intensive because it integrates many scenarios over a 15-year daily time grid.
 
-**Temporal**
+The script generates four date-stamped CSV files under `output/`:
 
-temporal\_simulation\_20251128\_clean.R: Generates temporal simulation results for 10%, 20%, and 90% baseline population ratios under the continuous release strategy.
-temporal\_simulation\_80goal\_20251128\_clean.R: Generates corresponding temporal simulation results under the threshold release strategy.
+| Output prefix | Contents |
+| --- | --- |
+| `output_partial_` | Wolbachia replacement with varying baseline source reduction, post-release retention, and blocking efficacy |
+| `output_initial_blocking_results_` | Wolbachia replacement with varying initial population proportions and blocking efficacy |
+| `no_release_results_` | No-Wolbachia-release comparison across initial population proportions |
+| `vector_control_only_results_` | Source reduction without Wolbachia releases, across reduction intensities and initial population proportions |
 
-**Parameter sensitivity** 
+Output files contain simulated time series and scenario identifiers. Relevant columns include `time`, `A_u`, `A_w`, `VC_u`, `VC_w`, `VC_total`, and `VC_relative` (where requested). `VC_relative` is the ratio to the selected baseline, so values below 1 indicate reduced vectorial capacity.
 
-varying\_para\_20251204\_clean.R: Explores simulation outcomes across varying baseline population ratios and Wolbachia blocking effects for the continuous release strategy.
-varying\_para\_80goal\_20251204\_clean.R: Performs the same analyses for the threshold release strategy.
+**Baseline definitions:** The existing-source-reduction analysis uses the mean vectorial capacity during the pre-release source-reduction period (`baseline_type = "control_period"`). The initial-population analysis uses vectorial capacity at the initial simulation time (`baseline_type = "initial"`).
 
-**Spatial**
+## Model and scenarios
 
-turelli2020\_space\_runc\_20251208.R:Defines the spatial model framework.
-spatial\_simulation\_20260130.R: Runs spatial simulations based on the defined framework.
+The state variables are `L_u` (wild-type aquatic stage), `A_u` (wild-type adults), `L_w` (Wolbachia-infected aquatic stage), and `A_w` (Wolbachia-infected adults). The baseline carrying capacity is `K0 = 30000`, with seasonal amplitude `eta = 0.2` and period 365 days. Releases occur at 7-day intervals for one year; release sizes are calculated by the scenario functions relative to adult wild-type abundance.
 
-**Figures**
+The main script evaluates:
 
-results\_plot\_20260130\_clean.R:Compiles simulation outputs and generates all summary tables and figures presented in the study.
+- **Existing source reduction:** 9 levels (0.1–0.9) × 4 post-release retention levels (0, 0.25, 0.5, 0.75) × 6 blocking levels (0.5–1.0): **216 combinations**.
+- **Initially low abundance, Wolbachia replacement:** 10 initial population fractions (0.1–1.0) × 6 blocking levels: **60 combinations**.
+- **No release:** 10 initial population fractions, blocking set to zero, release ratio set to zero.
+- **Source reduction only:** 9 source-reduction levels × 11 initial population fractions (0.1–1.0), no Wolbachia release.
 
+See the parameter files and `run_simulation.R` for exact settings. Model parameters and vectorial-capacity defaults are defined in `R/parameters/` and `R/calculate_vectorial_capacity.R`.
 
+## Reproducibility and scope
 
+The source files were reorganized and renamed for portability. The absolute Windows working-directory path was removed, `source()` paths were updated, and generated CSV files were directed to `output/`. The scientific functions and scenario parameter values were otherwise retained as supplied. No numerical equivalence check or full execution has yet been performed for this reorganized version.
 
+**Before citing the repository as an exact reproduction of published results**, verify the code against the final manuscript and archived outputs. In particular, the supplied manuscript describes **54** initial-population Wolbachia scenarios whereas the supplied main script specifies **60**; and the manuscript's reported initial equilibrium populations differ slightly from the hard-coded initial state in `vector_control.R`. These differences have not been silently changed here.
 
+## Citation
+
+Please cite the accompanying manuscript (add journal, year, DOI and final author list when available). For software citation, cite this repository's permanent release/DOI once assigned.
+
+## License
+
+No license is included. Repository maintainers should select and add a license (for example, MIT) after confirming authorization from all code contributors and relevant institutions.
+
+## Contact
+
+Please use the repository's GitHub Issues page for questions or reproducibility reports once the repository is published.
