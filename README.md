@@ -18,15 +18,15 @@ The repository contains the simulation and vectorial-capacity calculation script
 ```text
 .
 ├── README.md
-├── run_simulation.R                   # Main script: runs all four groups of scenarios
+├── run_simulation_20260928.R                   # Main script: runs all four groups of scenarios
 ├── R/
 │   ├── parameters/
-│   │   ├── vector_control.R           # Initial conditions and parameters with source reduction
-│   │   └── no_vector_control.R        # Initial conditions and parameters without source reduction
-│   ├── vector_control_model.R         # Four-compartment ODE model
-│   ├── calculate_vectorial_capacity.R # Vectorial-capacity calculation and normalization
-│   ├── run_k0_blocking_scenarios.R    # Existing-source-reduction scenarios
-│   └── run_initial_blocking_scenarios.R # Initial-population scenarios
+│   │   ├── vector_control_para_20260928.R           # Initial conditions and parameters with source reduction
+│   │   └── no_vector_control_para_20260928.R        # Initial conditions and parameters without source reduction
+│   ├── vector_control_func_20260811.R         # Four-compartment ODE model
+│   ├── calculate_vectorial_capacity_func_20260928.R # Vectorial-capacity calculation and normalization
+│   ├── run_k0_blocking_scenarios_func_20260928.R    # Existing-source-reduction scenarios
+│   └── run_initial_blocking_scenarios_func_20260928.R # Initial-population scenarios
 └── output/                            # Generated CSV files 
 ```
 
