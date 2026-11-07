@@ -208,7 +208,7 @@ for (k in K0_red_values) {
     parameters = parameters_k,
     times = times,
     initial_proportions = c(
-      0.1, 0.2, 0.3, 0.4, 0.5,
+      0.01, 0.1, 0.2, 0.3, 0.4, 0.5,
       0.6, 0.7, 0.8, 0.9, 1.0
     ),
     # No Wolbachia, so blocking is irrelevant
