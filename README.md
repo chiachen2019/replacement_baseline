@@ -85,15 +85,7 @@ Rscript run_simulation.R
 
 Alternatively, open `run_simulation.R` in RStudio, set the working directory to `baseline/`, and source the script. The run can be computationally intensive because it integrates many scenarios over a 15-year daily time grid.
 
-The simulation generates four date-stamped CSV datasets **locally**. These files are not uploaded to GitHub. The plotting scripts currently reference the following filenames:
-
-| Input CSV used by plotting scripts | Contents |
-| --- | --- |
-| `output/output_partial_2026-10-02.csv` | Wolbachia replacement with varying baseline source reduction, post-release retention, and blocking efficacy |
-| `output/output_initial_blocking_results_2026-10-02.csv` | Wolbachia replacement with varying initial population proportions and blocking efficacy |
-| `output/no_release_results_2026-09-28.csv` | No-Wolbachia-release comparison across initial population proportions |
-| `output/vector_control_only_results_2026-09-28.csv` | Source reduction without Wolbachia releases, across reduction intensities and initial population proportions |
-
+The simulation generates four date-stamped CSV datasets **locally**. These files are not uploaded to GitHub.
 Simulation scripts may produce filenames with the current date; ensure the CSV names used by the plotting scripts match the files in `output/`.
 
 Output files contain simulated time series and scenario identifiers. Relevant columns include `time`, `A_u`, `A_w`, `VC_u`, `VC_w`, `VC_total`, and `VC_relative` (where requested). `VC_relative` is the ratio to the selected baseline, so values below 1 indicate reduced vectorial capacity.
