@@ -31,12 +31,15 @@ baseline/
 │   ├── run_k0_blocking_scenarios.R
 │   └── run_initial_blocking_scenarios.R
 ├── plot/
+│   ├── est_time_series.pdf
+│   ├──initial_com_approach_2026-10-02.pdf
+│   ├── heatmap_vector_control_x_blocking_2026-10-02.pdf
 │   ├── plots_func.R
 │   ├── est_time_series_plot.R
 │   ├── initial_simulation_comparison_plot_20261002.R
 │   └── vector_control_plot_results_20260928.R
-├── output/                   # Generated CSVs (not included in GitHub)
-└── figures/                  # Generated PDF figures (not included in GitHub)
+└── output/                   # Generated CSVs (not included in GitHub)
+
 ```
 
 ## Requirements
